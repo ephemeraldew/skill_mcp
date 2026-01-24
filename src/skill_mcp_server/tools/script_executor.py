@@ -8,11 +8,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from ..skill.manager import SkillManager
-from ..security.path_validator import PathValidator, PathValidationError
-from ..security.file_validator import FileValidator, FileValidationError
-from ..executor.factory import get_executor
 from ..executor.base import ExecutionError
+from ..executor.factory import get_executor
+from ..security.file_validator import FileValidationError, FileValidator
+from ..security.path_validator import PathValidationError, PathValidator
+from ..skill.manager import SkillManager
 from ..utils.logging import get_logger
 from .base import BaseTool, ToolError
 
@@ -168,22 +168,26 @@ class ScriptExecutorTool(BaseTool):
         ]
 
         if result.stdout:
-            parts.extend([
-                "### stdout",
-                "```",
-                result.stdout.strip(),
-                "```",
-                "",
-            ])
+            parts.extend(
+                [
+                    "### stdout",
+                    "```",
+                    result.stdout.strip(),
+                    "```",
+                    "",
+                ]
+            )
 
         if result.stderr:
-            parts.extend([
-                "### stderr",
-                "```",
-                result.stderr.strip(),
-                "```",
-                "",
-            ])
+            parts.extend(
+                [
+                    "### stderr",
+                    "```",
+                    result.stderr.strip(),
+                    "```",
+                    "",
+                ]
+            )
 
         if result.timed_out:
             parts.append(f"**Status**: Timed out after {self.script_timeout} seconds")

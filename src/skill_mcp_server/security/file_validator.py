@@ -99,8 +99,7 @@ class FileValidator:
         file_size = path.stat().st_size
         if file_size > self.max_read_size:
             raise FileValidationError(
-                f"File too large to read: {file_size} bytes "
-                f"(max: {self.max_read_size} bytes)"
+                f"File too large to read: {file_size} bytes (max: {self.max_read_size} bytes)"
             )
         return file_size
 

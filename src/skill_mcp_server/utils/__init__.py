@@ -4,8 +4,8 @@
 """Utility functions for Skill MCP Server."""
 
 from .frontmatter import parse_frontmatter
+from .logging import get_logger, setup_logging
 from .markdown import extract_description
-from .logging import setup_logging, get_logger
 
 __all__ = [
     "parse_frontmatter",

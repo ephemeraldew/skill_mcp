@@ -9,8 +9,8 @@ from pathlib import Path
 from typing import Optional
 
 from ..utils.frontmatter import parse_frontmatter
-from ..utils.markdown import extract_description
 from ..utils.logging import get_logger
+from ..utils.markdown import extract_description
 from .models import SkillInfo, SkillMetadata
 
 logger = get_logger("skill.parser")

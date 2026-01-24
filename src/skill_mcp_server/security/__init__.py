@@ -3,8 +3,8 @@
 
 """Security utilities for Skill MCP Server."""
 
-from .path_validator import PathValidator
 from .file_validator import FileValidator
+from .path_validator import PathValidator
 
 __all__ = [
     "PathValidator",

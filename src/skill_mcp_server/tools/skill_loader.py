@@ -44,13 +44,15 @@ class SkillLoaderTool(BaseTool):
                 "No skills are currently available."
             )
 
-        skill_list = "\n".join([
-            f"  <skill>\n"
-            f"    <name>{skill.name}</name>\n"
-            f"    <description>{skill.description}</description>\n"
-            f"  </skill>"
-            for skill in skills
-        ])
+        skill_list = "\n".join(
+            [
+                f"  <skill>\n"
+                f"    <name>{skill.name}</name>\n"
+                f"    <description>{skill.description}</description>\n"
+                f"  </skill>"
+                for skill in skills
+            ]
+        )
 
         return (
             "Load a skill to get detailed instructions for a specific task. "
@@ -105,12 +107,14 @@ class SkillLoaderTool(BaseTool):
         all_skills = self.skill_manager.all()
 
         if all_skills:
-            skill_list = "\n".join([
-                f"  - {s.name}: {s.description[:80]}..."
-                if len(s.description) > 80
-                else f"  - {s.name}: {s.description}"
-                for s in all_skills
-            ])
+            skill_list = "\n".join(
+                [
+                    f"  - {s.name}: {s.description[:80]}..."
+                    if len(s.description) > 80
+                    else f"  - {s.name}: {s.description}"
+                    for s in all_skills
+                ]
+            )
             return (
                 f'Skill "{name}" not found.\n\n'
                 f"Available skills ({len(all_skills)} total):\n{skill_list}"

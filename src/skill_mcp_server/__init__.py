@@ -20,10 +20,10 @@ Example:
     >>> asyncio.run(server.run())
 """
 
+from .config.settings import Settings
 from .core.server import SkillMCPServer, create_server
 from .skill.manager import SkillManager
 from .skill.models import SkillInfo
-from .config.settings import Settings
 
 __version__ = "0.1.0"
 __author__ = "Skill MCP Server Contributors"

@@ -55,7 +55,7 @@ uv pip install skill-mcp-server
 mkdir skills
 
 # 2. 下载或创建一个 skill（示例：复制 skill-creator）
-cp -r examples/skill-creator skills/
+cp -r examples/skills/skill-creator skills/
 
 # 3. 启动服务器
 skill-mcp-server --skills-dir ./skills

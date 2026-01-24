@@ -9,7 +9,6 @@ import logging
 import sys
 from typing import Optional
 
-
 # Default log format
 DEFAULT_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 

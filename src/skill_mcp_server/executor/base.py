@@ -63,22 +63,26 @@ class ExecutionResult:
         ]
 
         if self.stdout:
-            parts.extend([
-                "### stdout",
-                "```",
-                self.stdout.strip(),
-                "```",
-                "",
-            ])
+            parts.extend(
+                [
+                    "### stdout",
+                    "```",
+                    self.stdout.strip(),
+                    "```",
+                    "",
+                ]
+            )
 
         if self.stderr:
-            parts.extend([
-                "### stderr",
-                "```",
-                self.stderr.strip(),
-                "```",
-                "",
-            ])
+            parts.extend(
+                [
+                    "### stderr",
+                    "```",
+                    self.stderr.strip(),
+                    "```",
+                    "",
+                ]
+            )
 
         if self.timed_out:
             parts.append("**Status**: Execution timed out")

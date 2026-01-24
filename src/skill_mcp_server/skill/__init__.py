@@ -3,10 +3,10 @@
 
 """Skill management module for Skill MCP Server."""
 
+from .manager import SkillManager
 from .models import SkillInfo
 from .parser import SkillParser
 from .scanner import SkillScanner
-from .manager import SkillManager
 
 __all__ = [
     "SkillInfo",

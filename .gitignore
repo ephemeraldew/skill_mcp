@@ -76,3 +76,10 @@ venv.bak/
 # Project specific
 workspace/
 *.log
+
+
+# ai cli
+.claude/*
+CLAUDE.md
+GEMINI.md
+AGENTS.md

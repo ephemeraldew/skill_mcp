@@ -1,61 +1,102 @@
-# Example Skills
+# Skill MCP Server Examples
 
-This directory contains example skills to help you get started with Skill MCP Server.
+## Interactive MCP Client Demo
 
-## Available Examples
+A simple interactive command-line MCP client (`demo.py`) that demonstrates how to:
+- Connect to skill-mcp-server via stdio protocol
+- Use OpenAI SDK for chat completions
+- Automatically handle tool calls from MCP server
+- Maintain conversation history
 
-### skill-creator
+### Installation
 
-A meta-skill that helps you create new skills. Use this skill when you want to:
+1. Install the skill-mcp-server package:
+```bash
+cd /path/to/skill_mcp
+pip install -e .
+```
 
-- Create a new skill from scratch
-- Understand the skill format and structure
-- Package skills for distribution
+2. Install example dependencies:
+```bash
+cd examples
+pip install -r requirements.txt
+```
 
-**Usage:**
+### Configuration
 
-1. Copy the `skill-creator` folder to your skills directory
-2. Start the MCP server
-3. Ask your AI agent to "create a new skill for [your use case]"
+Edit `demo.py` to configure your OpenAI API settings:
 
-## Using Examples
+```python
+openai_client = AsyncOpenAI(
+    base_url="https://api.openai.com/v1",  # Your OpenAI endpoint
+    api_key="your-api-key-here",           # Your API key
+)
+```
 
-To use these examples:
+The MCP server configuration is automatically loaded from:
+- **Skills directory**: `examples/skills/`
+- **Workspace**: `workspace/`
+
+### ❗️ Core Params
+```python
+from mcp import StdioServerParameters
+...
+
+    server_params = StdioServerParameters(
+        command="python",
+        args=[
+            "-m",
+            "skill_mcp_server",
+            "--skills-dir",
+            str(project_root / "examples" / "skills"),
+            "--workspace",
+            str(project_root / "workspace"),
+        ],
+    )
+```
+
+### Running the Demo
 
 ```bash
-# Copy an example to your skills directory
-cp -r examples/skill-creator /path/to/your/skills/
-
-# Or copy all examples
-cp -r examples/* /path/to/your/skills/
+cd examples
+python demo.py
 ```
 
-## Creating Your Own Skills
+### Usage
 
-Each skill is a folder containing:
+Once started, you'll see an interactive prompt:
 
 ```
-my-skill/
-├── SKILL.md              # Required: Main skill file
-├── scripts/              # Optional: Executable scripts
-│   └── helper.py
-├── references/           # Optional: Reference documentation
-│   └── api_docs.md
-└── assets/               # Optional: Templates, images, etc.
-    └── template.md
+🔧 Initializing MCP client...
+✅ Loaded 2 tools from MCP server
+
+📋 Available tools:
+  - greeter_greet: Greet a person by name
+  - greeter_farewell: Say goodbye to a person
+
+💬 Interactive MCP Client
+==================================================
+Type your message and press Enter
+Type 'quit' or 'exit' to stop
+Type 'clear' to clear conversation history
+==================================================
+
+You:
 ```
 
-### SKILL.md Format
+### Example Interactions
 
-```markdown
----
-name: my-skill
-description: What this skill does and when to use it
----
-
-# My Skill
-
-Instructions for the AI agent...
+**List available skills:**
+```
+You: What skills do you have?
+Assistant: I have access to greeting tools that can greet and say farewell to people.
 ```
 
-See the `skill-creator` example for detailed guidance on creating effective skills.
+**Use a tool:**
+```
+You: Greet Alice
+🔨 Calling tool: greeter_greet
+   Arguments: {
+     "name": "Alice"
+   }
+✅ Tool result: Hello, Alice! Welcome!
