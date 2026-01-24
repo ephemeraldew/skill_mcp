@@ -9,7 +9,6 @@
   <a href="#why-choose-skill-mcp-server">Why Choose It?</a> •
   <a href="#features">Features</a> •
   <a href="#quick-start">Quick Start</a> •
-  <a href="#how-it-works">How It Works</a> •
   <a href="#creating-skills">Creating Skills</a> •
   <a href="#documentation">Documentation</a>
 </p>
@@ -176,45 +175,6 @@ Step-by-step instructions for the AI agent...
 
 - `scripts/process_data.py` - Process input data
 - `assets/report_template.md` - Output template
-```
-
-## How It Works
-
-```mermaid
-graph LR
-    A[AI Agent] -- MCP Protocol --> B[Skill MCP Server]
-    B -- Scan --> C[Skills Directory]
-    C --> D[SKILL.md / YAML]
-    B -- Output --> E[Workspace]
-    B -- Provide Tools --> A
-```
-
-### Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        AI Agent (Claude)                         │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                                │ MCP Protocol
-                                ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      Skill MCP Server                            │
-│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐    │
-│  │   skill   │  │  skill_   │  │  skill_   │  │   file_   │    │
-│  │  loader   │  │ resource  │  │  script   │  │   ops     │    │
-│  └───────────┘  └───────────┘  └───────────┘  └───────────┘    │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                                ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        Skills Directory                          │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ data-analyst│  │ doc-writer  │  │ api-helper  │  ...        │
-│  │  SKILL.md   │  │  SKILL.md   │  │  SKILL.md   │             │
-│  │  scripts/   │  │  templates/ │  │  references/│             │
-│  └─────────────┘  └─────────────┘  └─────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
 ```
 
 ## Use Cases
