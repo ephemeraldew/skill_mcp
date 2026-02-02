@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 # Copyright (c) 2025
 # SPDX-License-Identifier: MIT
-
-"""
-Skill MCP Server - Command Line Entry Point
-
-Usage:
-    python -m skill_mcp_server
-    python -m skill_mcp_server --skills-dir ./my-skills --workspace ./output
-    skill-mcp-server --help
-"""
-
+"""Skill MCP Server - Command Line Entry Point."""
 from __future__ import annotations
+
+# Early silent mode check - MUST be before ANY other imports
+import logging as _logging
+import os as _os
+import sys as _sys
+
+if _os.environ.get("SKILL_MCP_LOG_LEVEL", "").upper() == "SILENT":
+    # Disable all logging globally
+    _logging.disable(_logging.CRITICAL)
+    # Redirect stderr to devnull for subprocess logs
+    _sys.stderr = open(_os.devnull, "w")
 
 import argparse
 import asyncio
@@ -67,7 +69,8 @@ For more information, visit:
     )
 
     parser.add_argument(
-        "-v", "--verbose",
+        "-v",
+        "--verbose",
         action="store_true",
         help="Enable verbose logging output",
     )
@@ -111,6 +114,7 @@ def main() -> int:
         print(f"Error: {e}", file=sys.stderr)
         if args.verbose:
             import traceback
+
             traceback.print_exc()
         return 1
 

@@ -6,15 +6,18 @@
 from __future__ import annotations
 
 import logging
+import os
 import sys
 from typing import Optional
-
 
 # Default log format
 DEFAULT_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
 # Package logger name
 LOGGER_NAME = "skill_mcp_server"
+
+# Environment variable for log level override
+LOG_LEVEL_ENV = "SKILL_MCP_LOG_LEVEL"
 
 
 def setup_logging(
@@ -29,8 +32,27 @@ def setup_logging(
 
     Returns:
         Configured root logger for the package.
+
+    Environment variables:
+        SKILL_MCP_LOG_LEVEL: Override log level (DEBUG, INFO, WARNING, ERROR, CRITICAL, SILENT)
+                            Use SILENT to disable all logging output.
     """
-    level = logging.DEBUG if verbose else logging.INFO
+    # Check environment variable for log level override
+    env_level = os.environ.get(LOG_LEVEL_ENV, "").upper()
+
+    # Handle SILENT mode - disable all logging output
+    if env_level == "SILENT":
+        # Don't configure any handlers, just return a disabled logger
+        logging.disable(logging.CRITICAL)
+        logger = logging.getLogger(LOGGER_NAME)
+        logger.addHandler(logging.NullHandler())
+        return logger
+
+    if env_level and hasattr(logging, env_level):
+        level = getattr(logging, env_level)
+    else:
+        level = logging.DEBUG if verbose else logging.INFO
+
     fmt = log_format or DEFAULT_FORMAT
 
     # Configure the root logger
@@ -57,6 +79,10 @@ def get_logger(name: Optional[str] = None) -> logging.Logger:
     Returns:
         Logger instance.
     """
+    # Check for silent mode
+    if os.environ.get(LOG_LEVEL_ENV, "").upper() == "SILENT":
+        logging.disable(logging.CRITICAL)
+
     if name is None:
         return logging.getLogger(LOGGER_NAME)
 

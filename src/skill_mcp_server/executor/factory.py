@@ -10,9 +10,9 @@ from typing import Optional
 
 from ..config.defaults import SCRIPT_TIMEOUT
 from .base import BaseExecutor, ExecutionError
+from .node import NodeExecutor, TypeScriptExecutor
 from .python import PythonExecutor
 from .shell import ShellExecutor
-from .node import NodeExecutor, TypeScriptExecutor
 
 
 class ExecutorFactory:
@@ -121,9 +121,6 @@ def get_executor(path: Path, timeout: int = SCRIPT_TIMEOUT) -> BaseExecutor:
 
     if executor is None:
         supported = ", ".join(sorted(factory.get_supported_extensions()))
-        raise ExecutionError(
-            f"No executor found for '{path.suffix}'. "
-            f"Supported types: {supported}"
-        )
+        raise ExecutionError(f"No executor found for '{path.suffix}'. Supported types: {supported}")
 
     return executor

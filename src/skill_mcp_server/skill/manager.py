@@ -8,10 +8,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from ..config.defaults import SKILL_SCAN_PATTERNS, RESOURCE_DIRS
+from ..config.defaults import RESOURCE_DIRS, SKILL_SCAN_PATTERNS
 from ..utils.logging import get_logger
 from .models import SkillInfo
-from .parser import SkillParser, SkillParseError
+from .parser import SkillParseError, SkillParser
 from .scanner import SkillScanner
 
 logger = get_logger("skill.manager")

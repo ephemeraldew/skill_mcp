@@ -12,12 +12,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
-
 # Pattern to match YAML frontmatter delimited by ---
-FRONTMATTER_PATTERN = re.compile(
-    r"^---\s*\n(.*?)\n---\s*\n(.*)$",
-    re.DOTALL
-)
+FRONTMATTER_PATTERN = re.compile(r"^---\s*\n(.*?)\n---\s*\n(.*)$", re.DOTALL)
 
 
 def parse_frontmatter(content: str) -> tuple[dict[str, Any], str]:
@@ -105,8 +101,9 @@ def _unquote(value: str) -> str:
         String with quotes removed.
     """
     if len(value) >= 2:
-        if (value.startswith('"') and value.endswith('"')) or \
-           (value.startswith("'") and value.endswith("'")):
+        if (value.startswith('"') and value.endswith('"')) or (
+            value.startswith("'") and value.endswith("'")
+        ):
             return value[1:-1]
     return value
 

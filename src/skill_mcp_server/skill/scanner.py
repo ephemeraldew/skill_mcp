@@ -22,16 +22,18 @@ class SkillScanner:
     """
 
     # Directories to exclude from scanning
-    EXCLUDED_DIRS: frozenset[str] = frozenset({
-        "__pycache__",
-        ".git",
-        ".svn",
-        ".hg",
-        "node_modules",
-        ".venv",
-        "venv",
-        ".env",
-    })
+    EXCLUDED_DIRS: frozenset[str] = frozenset(
+        {
+            "__pycache__",
+            ".git",
+            ".svn",
+            ".hg",
+            "node_modules",
+            ".venv",
+            "venv",
+            ".env",
+        }
+    )
 
     def __init__(
         self,
