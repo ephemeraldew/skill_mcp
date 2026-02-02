@@ -17,7 +17,7 @@
 ## 🎬 演示视频
 
 <p align="center">
-  <img src="docs/example.gif" alt="演示视频" width="800">
+  <img src="https://github.com/ephemeraldew/skill_mcp/raw/main/docs/example.gif" alt="演示视频" width="800">
 </p>
 
 ---

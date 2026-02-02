@@ -17,7 +17,7 @@
 ## 🎬 Demo
 
 <p align="center">
-  <img src="docs/example.gif" alt="Demo Video" width="800">
+  <img src="https://github.com/ephemeraldew/skill_mcp/raw/main/docs/example.gif" alt="Demo Video" width="800">
 </p>
 
 ---
