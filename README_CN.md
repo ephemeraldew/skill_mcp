@@ -17,10 +17,7 @@
 ## 🎬 演示视频
 
 <p align="center">
-  <video width="800" controls>
-    <source src="docs/example.mov" type="video/quicktime">
-    您的浏览器不支持视频播放。<a href="docs/example.mov">点击这里下载视频</a>。
-  </video>
+  <img src="docs/example.gif" alt="演示视频" width="800">
 </p>
 
 ---
