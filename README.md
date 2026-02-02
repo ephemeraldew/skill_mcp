@@ -1,16 +1,27 @@
-# Skill MCP Server
+# Skill MCP Server 🚀
 
 <p align="center">
   <strong>Turn any AI agent into a specialist — just drop in a skill folder.</strong>
 </p>
 
 <p align="center">
+  <a href="#what-is-skill-mcp-server">📖 What is it?</a> •
+  <a href="#why-choose-skill-mcp-server">🌟 Why Choose It?</a> •
   <a href="#features">✨ Features</a> •
   <a href="#quick-start">🚀 Quick Start</a> •
-  <a href="#how-it-works">⚡️ How It Works</a> •
-  <a href="#creating-skills">⚙️ Creating Skills</a> •
+  <a href="#creating-skills">📝 Creating Skills</a> •
   <a href="#documentation">📚 Documentation</a>
 </p>
+
+## 📖 What is Skill MCP Server?
+
+Skill MCP Server is a standard [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that bridges Claude Skills to any AI agent that supports MCP.
+
+<p align="center">
+  <img src="docs/skll_mcp.png" alt="Skill MCP Server" style="max-width: 100%; height: auto;"/>
+</p>
+
+Previously, Claude Skills were mainly used in Anthropic's official tools. If your AI application doesn't support Skills, you'd have to implement your own parsing and execution logic, which is a hassle. With this project, you can simply configure it and let any MCP-compatible Agent use standard Skill files directly.
 
 ---
 
@@ -20,33 +31,39 @@
   <img src="https://github.com/ephemeraldew/skill_mcp/raw/main/docs/example.gif" alt="Demo Video" width="800">
 </p>
 
----
+## 💡 Core Concepts
 
-**Skill MCP Server** is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that enables AI agents like Claude to dynamically load and use modular "skills".
+- 🔌 **MCP (Model Context Protocol)**: Think of it as a "USB interface" for AI. As long as your AI assistant supports this interface, it can connect to various tools and services.
+- 📦 **Claude Skills**: Think of them as "skill packages" for AI. They're not just documentation — they include instructions (`SKILL.md`), accompanying scripts (Python/JS), and reference materials.
 
-Think of it as a **plugin system for AI agents** — drop a skill folder into the directory, and your agent instantly gains new capabilities. No coding required, no server restarts needed.
+Skill MCP Server is a "converter" that helps various agents use the Skill ecosystem, enabling plug-and-play functionality.
 
-## 🆚  Why Skill MCP Server?
+## 🌟 Why Choose Skill MCP Server?
 
-| Traditional Approach | With Skill MCP Server |
-|---------------------|----------------------|
-| Write code to extend agent capabilities | Just copy a folder |
-| Restart services to apply changes | Hot reload, instant availability |
-| Each capability developed separately | Community-shared, plug-and-play |
-| Complex integration work | Zero configuration |
+If your Agent doesn't support Skills yet, this project can help you quickly integrate:
+
+| Dimension | Natively Supported Agents (e.g., Claude Code) | Other Agents (with this project) |
+|-----------|------------------------------------------------|----------------------------------|
+| Access Barrier | Deep integration, usually non-portable | Low barrier, standard MCP protocol |
+| Development Burden | Official implementation complete | Zero code, no need to build Skill parser |
+| Flexibility | Tied to specific clients | Cross-platform, works with any MCP-compatible agent |
+| Feature Parity | Full script, resource & file stream support | Perfect alignment, same dynamic execution & resource access |
 
 ## ✨ Features
 
-- **Instant Capability Extension** — Drop skill folders, gain superpowers
-- **Zero Configuration** — Skills are auto-discovered and loaded
-- **Hot Reload** — Add new skills without restarting the server
-- **Multi-Language Scripts** — Execute Python, Shell, JavaScript, TypeScript
-- **Secure by Design** — Path validation, sandboxed file operations
-- **Resource Bundling** — Include templates, references, and assets with skills
+- 🛠️ **Highly Standardized**: Strictly follows MCP protocol
+- 🌍 **Universal Compatibility**: Not tied to any vendor, works with all MCP-compatible AI clients
+- ⚡ **Zero-Code Integration**: Helps agents without native Skill support quickly access the Skill ecosystem
+- 📦 **Fully Compatible**: Supports `SKILL.md` format and `scripts/`, `references/` resource directories
+- 📂 **Workspace Isolation**: Supports `--workspace` parameter to specify where Skill output files are stored
+- 🔄 **Hot Reload**: Add new skills without restarting the server
+- 🔒 **Secure by Design**: Path validation, sandboxed file operations
 
 ## 🚀 Quick Start
 
-### Installation
+Recommended: Use `uvx` to run without manual installation.
+
+### 📥 Installation
 
 ```bash
 # Using pip
@@ -56,46 +73,19 @@ pip install skill-mcp-server
 uv pip install skill-mcp-server
 ```
 
-### 30-Second Setup
+### ⚙️ Configure MCP
 
-```bash
-# 1. Create a skills directory
-mkdir skills
+Add Skill MCP Server to your MCP client configuration. All MCP-compatible clients use the same configuration format:
 
-# 2. Download or create a skill (example: copy the skill-creator)
-cp -r examples/skill-creator skills/
-
-# 3. Start the server
-skill-mcp-server --skills-dir ./skills
-```
-
-That's it! Your AI agent can now use the skill.
-
-### Configure with Claude Desktop
-
-Add to your `claude_desktop_config.json`:
+**Using uvx (recommended, no installation needed):**
 
 ```json
 {
   "mcpServers": {
     "skill-server": {
-      "command": "skill-mcp-server",
-      "args": ["--skills-dir", "/path/to/your/skills"]
-    }
-  }
-}
-```
-
-### Configure with Claude Code
-
-Add to your `~/.claude.json`:
-
-```json
-{
-  "mcpServers": {
-    "skill-server": {
-      "command": "skill-mcp-server",
+      "command": "uvx",
       "args": [
+        "skill-mcp-server",
         "--skills-dir", "/path/to/your/skills",
         "--workspace", "/path/to/workspace"
       ]
@@ -104,59 +94,71 @@ Add to your `~/.claude.json`:
 }
 ```
 
-## ⚡️ How It Works
+**Using local installation:**
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        AI Agent (Claude)                         │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                                │ MCP Protocol
-                                ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      Skill MCP Server                            │
-│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐    │
-│  │   skill   │  │  skill_   │  │  skill_   │  │   file_   │    │
-│  │  loader   │  │ resource  │  │  script   │  │   ops     │    │
-│  └───────────┘  └───────────┘  └───────────┘  └───────────┘    │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                                ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        Skills Directory                          │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ data-analyst│  │ doc-writer  │  │ api-helper  │  ...        │
-│  │  SKILL.md   │  │  SKILL.md   │  │  SKILL.md   │             │
-│  │  scripts/   │  │  templates/ │  │  references/│             │
-│  └─────────────┘  └─────────────┘  └─────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
+```json
+{
+  "mcpServers": {
+    "skill-server": {
+      "command": "python",
+      "args": [
+        "-m", "skill_mcp_server",
+        "--skills-dir", "/path/to/your/skills",
+        "--workspace", "/path/to/workspace"
+      ]
+    }
+  }
+}
 ```
 
-### Available MCP Tools
+**Configuration file locations:**
+- Claude Desktop: `claude_desktop_config.json` (location varies by OS)
+- Claude Code: `~/.claude.json`
+- Other MCP clients: Refer to your client's documentation
 
-| Tool | Description |
-|------|-------------|
-| `skill` | Load a skill to get detailed instructions |
-| `list_skills` | List all available skills |
-| `skill_resource` | Read resource files from a skill |
-| `skill_script` | Execute scripts bundled with a skill |
-| `file_read` | Read files from workspace |
-| `file_write` | Write files to workspace |
-| `file_edit` | Edit existing files in workspace |
+**Parameter Explanation:**
 
-## ⚙️ Creating Skills
+- `--skills-dir`: Core parameter. Set to the root directory containing all Skill folders you want your agent to use.
+- `--workspace`: Important parameter. Specifies where Skill execution output files (code, reports, etc.) are saved.
 
-A skill is simply a folder containing a `SKILL.md` file:
+## 🛠️ Available Tools (MCP Tools)
+
+Once connected, your AI agent can use the following tools:
+
+1. 🔍 `list_skills`: List all available skills
+2. 📚 `skill`: Load a specific skill to get detailed instructions from its `SKILL.md`
+3. 📄 `skill_resource`: Read reference documents or templates from skill packages
+4. ▶️ `skill_script`: Execute scripts bundled with skills in a secure environment
+5. 📖 `file_read`: Read files from the specified workspace
+6. ✍️ `file_write`: Write files to the specified workspace
+7. ✏️ `file_edit`: Edit existing files in the workspace
+
+## 📝 Creating Skills
+
+A standard Skill structure looks like this:
 
 ```
-my-skill/
-├── SKILL.md              # Required: Instructions for the AI
-├── scripts/              # Optional: Executable scripts
-│   └── process_data.py
-├── references/           # Optional: Reference documentation
-│   └── api_docs.md
-└── assets/               # Optional: Templates, images, etc.
-    └── report_template.md
+my-skills/
+└── deploy-helper/           # Skill folder
+    ├── SKILL.md             # Core documentation (required)
+    ├── scripts/             # Executable scripts
+    └── references/          # Reference materials
+```
+
+**SKILL.md Example:**
+
+```markdown
+---
+name: deploy-helper
+description: Help users deploy applications to production with one click
+---
+
+# Deploy Helper Usage Guide
+
+When users request deployment, follow these steps:
+1. Use `skill_resource` to read the deployment template.
+2. Modify local configuration files.
+3. Call `skill_script` to execute the deployment script.
 ```
 
 ### SKILL.md Format
@@ -183,52 +185,27 @@ Step-by-step instructions for the AI agent...
 - `assets/report_template.md` - Output template
 ```
 
-### Example: Data Analyst Skill
+## 💼 Use Cases
 
-```markdown
----
-name: data-analyst
-description: Analyze CSV data and generate insights reports
----
-
-# Data Analyst
-
-## When to Use
-
-Use this skill when the user wants to:
-- Analyze CSV or tabular data
-- Generate statistical summaries
-- Create data visualizations
-
-## Workflow
-
-1. Read the data file using `file_read`
-2. Execute `scripts/analyze.py` for statistical analysis
-3. Use `assets/report_template.md` to format the output
-4. Write the report using `file_write`
-```
-
-## 📊 Use Cases
-
-- **Data Analysis** — Agent becomes a data scientist
-- **Document Generation** — Agent creates professional documents
-- **API Integration** — Agent works with specific APIs
-- **Code Review** — Agent follows your team's standards
-- **DevOps Tasks** — Agent automates deployment workflows
+- 📊 **Data Analysis**: Enable agents to perform data analysis
+- 📝 **Document Generation**: Enable agents to create professional documents
+- 🔗 **API Integration**: Enable agents to integrate with specific APIs
+- 🔍 **Code Review**: Enable agents to follow team standards
+- 🚀 **DevOps Tasks**: Enable agents to automate deployment workflows
 
 ## 📚 Documentation
 
-- [Getting Started Guide](docs/getting-started.md)
-- [Creating Skills](docs/creating-skills.md)
-- [Skill Format Reference](docs/skill-format.md)
-- [API Reference](docs/api/)
+- 📖 [Getting Started Guide](docs/getting-started.md)
+- ✨ [Creating Skills](docs/creating-skills.md)
+- 📋 [Skill Format Reference](docs/skill-format.md)
+- 📤 [Publishing Guide](docs/publishing.md)
 
-## 🔨 Development
+## 🛠️ Development
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/skill-mcp-server.git
-cd skill-mcp-server
+git clone https://github.com/ephemeraldew/skill_mcp.git
+cd skill_mcp
 
 # Install development dependencies
 uv pip install -e ".[dev]"
@@ -240,13 +217,21 @@ pytest
 ruff check src/
 ```
 
-## 👥 Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## 📃 License
+If this project helps you, please give it a ⭐️ Star.
+
+## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## 🔗 Related Resources
+
+- [MCP Official Documentation](https://modelcontextprotocol.io/)
+- [Claude Skills Official Guide](https://code.claude.com/docs/en/skills)
+- [Agent Skills Open Standard](https://agentskills.io/)
 
 ---
 
